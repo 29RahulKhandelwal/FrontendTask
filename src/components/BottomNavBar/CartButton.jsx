@@ -1,8 +1,15 @@
 import React, { useState } from 'react'
+import { useContext } from 'react';
+import CartContext from '../../store/CartContext';
 import classes from "./CartButton.module.css";
 
 const CartButton = (props) => {
+    const cartCtx=useContext(CartContext)
     const [isclick,setIsClick]=useState(false);
+
+    const numberOfCartItems=cartCtx.items.reduce((curNumber,item)=>{
+      return curNumber+item.amount
+    },0)
 
     function handleClick(event){
         setIsClick(!isclick)
@@ -12,7 +19,7 @@ const CartButton = (props) => {
   return (
     <div className={classes.cartButton}>
         <div className={classes.btn}>
-            1 Item(s)<br />Total Rs. 1
+            {numberOfCartItems} Item(s)<br />Total Rs. {cartCtx.totalAmount}
         <button className={classes.arrowbtn} onClick={handleClick}><i class={isclick ? `fa-solid fa-xsm fa-angle-down ${classes.arrowup}` : `fa-solid fa-xsm fa-angle-up ${classes.arrowup}`}></i></button>
         </div>
     </div>

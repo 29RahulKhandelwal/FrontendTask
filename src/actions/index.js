@@ -6,11 +6,3 @@ export const LoggedInAction=(data)=>{
         }
     }
 }
-export const CrossAction=(data)=>{
-    return{
-        type:"CROSS_ACTION",
-        payload:{
-            data:data
-        }
-    }
-}

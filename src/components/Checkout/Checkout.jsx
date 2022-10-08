@@ -2,8 +2,17 @@ import React from 'react'
 import { Link } from "react-router-dom"
 import classes from "./Checkout.module.css"
 import AddQuantityIncrementDecrementBtn from '../ProductList/AddQuantityIncrementDecrementBtn'
+import { useContext } from 'react'
+import CartContext from '../../store/CartContext'
 
 const Checkout = () => {
+  const cartCtx=useContext(CartContext)
+  const cartItemRemovehandler=id=>{
+    cartCtx.removeItem(id)
+  }
+  const cartItemAddhandler=item=>{
+    cartCtx.addItem({...item,amount:1})
+  }
   return (
     <div className={classes.cartdetails}>
         <div className={classes.main}>
@@ -27,13 +36,19 @@ const Checkout = () => {
             <p className={classes.qtys}>Quantity</p>
             <p className={classes.amounts}>Amount</p>
           </div>
-          <div className={classes.data}>
-            <p className={classes.item}>Rajma Chawal</p>
-            <p className={classes.qty}>
-              <AddQuantityIncrementDecrementBtn />
-            </p>
-            <p className={classes.amount}>Rs. 1</p>
-          </div>
+          {cartCtx.items.map(item=>(
+            <div className={classes.data} key={item.id}>
+              <p className={classes.item}>{item.name}</p>
+              <p className={classes.qty}>
+              <div className={classes.IncrementDecrementBtn}>
+                <button className={classes.decbtn}  onClick={cartItemRemovehandler.bind(null,item.id)}>-</button>
+                {item.amount}
+                <button className={classes.incbtn} onClick={cartItemAddhandler.bind(null,item)}>+</button>
+              </div>
+              </p>
+              <p className={classes.amount}>Rs. {item.price}</p>
+            </div>
+          ))}
         </div>
         <div className={classes.orderTotal}>
           <p className={classes.total}>Total</p>
